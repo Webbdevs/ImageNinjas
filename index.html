@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+#images{
+}
+</style>
+<body>
+<h1 style='text-align:center;'>Search the text in the input and you will get an image</h1>
+  <input type='text' id='search-txt'>
+  <button onclick='getImg()'>Search</button>
+      <div id="image-container"></div>
+    <script>
+const accessKey = 'JunlsSkxYn3h43yY7iXg8kNtgHORpyIjjJvehFDRUAs';
+
+const headers = new Headers({
+  'Authorization': `Client-ID ${accessKey}`
+});
+let searchTerm = 'sea'
+let arr = []
+function getImg() {
+    arr = []
+    const imageContainer = document.getElementById('image-container');
+    while (imageContainer.firstChild) {
+        imageContainer.removeChild(imageContainer.firstChild);
+    }
+    let searchTxt = document.getElementById('search-txt')
+    fetch(`https://api.unsplash.com/search/photos?query=${searchTxt.value}&per_page=5`, { headers })
+
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            for (let i = 0; i < data.results.length; i++) {
+                const imageUrl = data.results[i].urls.regular;
+                arr.push(imageUrl)
+                console.log(arr)
+            }
+            for (let i = 0; i < arr.length; i++) {
+                const imageElement = document.createElement('img');
+                imageElement.src = arr[i]
+                document.getElementById('image-container').appendChild(imageElement);
+                const downloadButton = document.createElement('button');
+                downloadButton.innerHTML = 'Download';
+                downloadButton.addEventListener('click', e => {
+                    e.preventDefault();
+                    downloadImage(arr[i]);
+                });
+                document.getElementById('image-container').appendChild(downloadButton);
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        });
+}
+function downloadImage(imageUrl) {
+    fetch(imageUrl)
+        .then(response => response.blob())
+        .then(blob => {
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = imageUrl.split('/').pop() + '.jpg';
+            link.click();
+            URL.revokeObjectURL(url);
+        });
+}
+
+
+
+    </script>
+</body>
+</html>
