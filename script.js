@@ -51,7 +51,7 @@ let forwardBtn = document.getElementById('material-symbols-outlined-forward')
                 let imageAp = document.getElementById('img-data')
                 if(counter==arr.length - 1)
                 {
-                    alert('sui')
+                   // alert('sui')
                     counter = 0
                 }
                 imageAp.src = arr[counter]
