@@ -5,23 +5,59 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-</head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <style>
-#images{
+.material-symbols-outlined {
+    cursor: pointer;
+    float: right;
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 48;
 }
-</style>
+#material-symbols-outlined-backward {
+    cursor: pointer;
+    float: left;
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 48;
+}
+#img-data{
+    width:1000px;
+    height:400px;
+}
+    </style>
 <body>
 <h1 style='text-align:center;'>Search the text in the input and you will get an image</h1>
+<form onclick="event.preventDefault()">
   <input type='text' id='search-txt'>
   <button onclick='getImg()'>Search</button>
-      <div id="image-container"></div>
+  </form>
+      <div id="image-container">
+      </div>
+      <center>
+      <img id="img-data">
+      </center>
+      <span id="material-symbols-outlined-forward">
+      <span class="material-symbols-outlined">
+        arrow_forward_ios
+        </span>
+        </span>
+        <span id="material-symbols-outlined-backward">
+            <span class="material-symbols-outlined">
+                arrow_back_ios
+                </span>
+            </span>
     <script>
+        let counter = 1;
 const accessKey = 'JunlsSkxYn3h43yY7iXg8kNtgHORpyIjjJvehFDRUAs';
 
 const headers = new Headers({
   'Authorization': `Client-ID ${accessKey}`
 });
-let searchTerm = 'sea'
 let arr = []
 function getImg() {
     arr = []
@@ -40,9 +76,11 @@ function getImg() {
                 arr.push(imageUrl)
                 console.log(arr)
             }
-            for (let i = 0; i < arr.length; i++) {
+            document.getElementById('img-data').src = arr[0]
+            /*for (let i = 0; i < arr.length; i++) {
                 const imageElement = document.createElement('img');
                 imageElement.src = arr[i]
+
                 document.getElementById('image-container').appendChild(imageElement);
                 const downloadButton = document.createElement('button');
                 downloadButton.innerHTML = 'Download';
@@ -51,7 +89,7 @@ function getImg() {
                     downloadImage(arr[i]);
                 });
                 document.getElementById('image-container').appendChild(downloadButton);
-            }
+            }*/
         })
         .catch(error => {
             console.error(error);
@@ -70,8 +108,34 @@ function downloadImage(imageUrl) {
         });
 }
 
+let forwardBtn = document.getElementById('material-symbols-outlined-forward')
+            forwardBtn.onclick = () =>
+            {
+                //alert(counter)
+                //alert('sui')
+                counter++;
+                let imageAp = document.getElementById('img-data')
+                if(counter==arr.length - 1 || counter==arr.length)
+                {
+                    alert('sui')
+                    counter = 0
+                }
+                imageAp.src = arr[counter]
+            }
 
-
+            let backwardBtn = document.getElementById('material-symbols-outlined-backward')
+            backwardBtn.onclick = () =>
+            {
+                //alert(counter)
+                //alert('sui')
+                counter--;
+                let imageAp = document.getElementById('img-data')
+                if(counter==-1)
+                {
+                    counter = arr.length - 1
+                }
+                imageAp.src = arr[counter]
+            }
     </script>
 </body>
 </html>
